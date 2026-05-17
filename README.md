@@ -4,6 +4,8 @@
 
 **[Live Demo](https://ti-community-dashboard.pages.dev)**
 
+![Dashboard Preview](docs/dashboard-preview.png)
+
 ---
 
 ## The Problem
