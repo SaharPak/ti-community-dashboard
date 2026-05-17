@@ -8,9 +8,23 @@ import { MonetizationChart } from "./components/MonetizationChart";
 import { ActionItems } from "./components/ActionItems";
 import { AdminTeam } from "./components/AdminTeam";
 import { GrowthLevers } from "./components/GrowthLevers";
-import { kpis } from "./data/community-data";
+import { MemberGrowthChart } from "./components/MemberGrowthChart";
+import { KeywordTrends } from "./components/KeywordTrends";
+import { UnansweredQuestions } from "./components/UnansweredQuestions";
+import { useSnapshot, useHistory } from "./hooks/useData";
 
 function App() {
+  const snapshot = useSnapshot();
+  const history = useHistory();
+
+  const lastUpdated = new Date(snapshot.timestamp).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <div className="min-h-screen bg-slate-900 p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -20,49 +34,59 @@ function App() {
             <h1 className="text-2xl font-bold text-slate-50">Tech Immigrants</h1>
             <p className="text-sm text-slate-400 mt-1">Community Management Dashboard</p>
           </div>
-          <p className="text-xs text-slate-500">Last updated: May 17, 2026</p>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <p className="text-xs text-slate-500">Last updated: {lastUpdated}</p>
+          </div>
         </header>
 
         {/* KPI Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <StatCard
             label="Group Members"
-            value={kpis.groupMembers}
+            value={snapshot.kpis.groupMembers}
             trend="up"
-            trendValue={`+${kpis.recentGrowth} recent`}
+            trendValue={history.length >= 2 ? `+${snapshot.kpis.groupMembers - history[0].kpis.groupMembers} this week` : undefined}
             icon={<Users size={18} />}
           />
           <StatCard
             label="Channel Subscribers"
-            value={kpis.channelSubscribers}
+            value={snapshot.kpis.channelSubscribers}
             icon={<Radio size={18} />}
           />
           <StatCard
             label="Cross-Platform"
-            value={kpis.crossPlatformReach}
+            value={snapshot.kpis.crossPlatformReach.toLocaleString() + "+"}
             trend="up"
             trendValue="All organic"
             icon={<Globe size={18} />}
           />
           <StatCard
-            label="YouTube Episodes"
-            value={`${kpis.youtubeEpisodes}+`}
-            trend="up"
-            trendValue={kpis.youtubeViews + " views"}
+            label="Messages Sampled"
+            value={snapshot.messagesSampled}
             icon={<TrendingUp size={18} />}
           />
         </div>
 
+        {/* Growth Trend */}
+        <MemberGrowthChart history={history} />
+
         {/* Topic Activity */}
-        <TopicActivityChart />
+        <TopicActivityChart topics={snapshot.topics} />
 
         {/* Pain Points */}
         <section>
           <h2 className="text-lg font-semibold text-slate-100 mb-3">Community Pain Points</h2>
-          <PainPointsChart />
+          <PainPointsChart keywords={snapshot.keywords} />
         </section>
 
-        {/* Engagement + Content side by side on large screens */}
+        {/* Keyword Trends */}
+        <KeywordTrends history={history} />
+
+        {/* Unanswered Questions */}
+        <UnansweredQuestions questions={snapshot.unansweredQuestions} />
+
+        {/* Engagement + Content */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <EngagementChart />
           <ContentPerformance />
@@ -81,12 +105,12 @@ function App() {
         </section>
 
         {/* Admin Team */}
-        <AdminTeam />
+        <AdminTeam admins={snapshot.admins} />
 
         {/* Footer */}
         <footer className="pt-4 border-t border-slate-800">
           <p className="text-xs text-slate-600 text-center">
-            Tech Immigrants Community Dashboard — Data sourced from Telegram MCP live analysis
+            Tech Immigrants Community Dashboard — Auto-updated via n8n + Telegram Bot API
           </p>
         </footer>
       </div>

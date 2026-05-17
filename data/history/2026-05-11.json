@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-05-11T19:00:00.000Z",
+  "date": "2026-05-11",
+  "kpis": {
+    "groupMembers": 17355,
+    "channelSubscribers": 7120,
+    "crossPlatformReach": 52650,
+    "adminsCount": 6
+  },
+  "keywords": {
+    "vpn": 7,
+    "resume": 18,
+    "ai": 22,
+    "reject": 5,
+    "visa": 8,
+    "interview": 9,
+    "salary": 2,
+    "job": 12
+  },
+  "messagesSampled": 38
+}

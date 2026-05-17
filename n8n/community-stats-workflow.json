@@ -1,0 +1,352 @@
+{
+  "name": "Tech Immigrants — Community Stats Collector",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24,
+              "triggerAtHour": 3
+            }
+          ]
+        }
+      },
+      "id": "trigger-daily",
+      "name": "Daily 6AM EEST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatMemberCount",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-member-count",
+      "name": "Get Member Count",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, -200]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChat",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-chat-info",
+      "name": "Get Chat Info",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 0]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getForumTopicIconStickers",
+        "options": {}
+      },
+      "id": "get-forum-stickers",
+      "name": "Get Forum Stickers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 200],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatMemberCount",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $vars.TI_CHANNEL_CHAT_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-channel-count",
+      "name": "Get Channel Subscribers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 400]
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getUpdates",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "allowed_updates",
+              "value": "[\"message\"]"
+            },
+            {
+              "name": "limit",
+              "value": "100"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-recent-messages",
+      "name": "Get Recent Messages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 600],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatAdministrators",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "chat_id",
+              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "get-admins",
+      "name": "Get Admins",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 800]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Collect all inputs from previous nodes\nconst memberCount = $('Get Member Count').first().json;\nconst chatInfo = $('Get Chat Info').first().json;\nconst channelCount = $('Get Channel Subscribers').first().json;\nconst recentMessages = $('Get Recent Messages').first().json;\nconst adminsData = $('Get Admins').first().json;\n\n// Parse member counts\nconst groupMembers = memberCount?.result || 0;\nconst channelSubscribers = channelCount?.result || 0;\n\n// Parse admin list\nconst admins = (adminsData?.result || []).map(a => ({\n  name: [a.user.first_name, a.user.last_name].filter(Boolean).join(' '),\n  username: a.user.username || null,\n  status: a.status,\n  isBot: a.user.is_bot\n}));\n\n// Parse recent messages for keyword analysis\nconst messages = (recentMessages?.result || []).map(u => u.message).filter(Boolean);\n\n// Keyword tracking\nconst keywords = {\n  vpn: 0,\n  resume: 0,\n  ai: 0,\n  reject: 0,\n  visa: 0,\n  interview: 0,\n  salary: 0,\n  job: 0\n};\n\nconst keywordPatterns = {\n  vpn: /vpn|فیلتر|شکن|proxy|تحریم/gi,\n  resume: /resume|رزومه|cv|cover.?letter|کاور.?لتر/gi,\n  ai: /ai|هوش.?مصنوعی|claude|chatgpt|cursor|gemini|machine.?learning/gi,\n  reject: /reject|ریجکت|رد.?شد/gi,\n  visa: /visa|ویزا|اقامت|مهاجرت/gi,\n  interview: /interview|مصاحبه/gi,\n  salary: /salary|حقوق|درآمد/gi,\n  job: /job|استخدام|شغل|کار/gi\n};\n\nfor (const msg of messages) {\n  const text = msg.text || '';\n  for (const [key, pattern] of Object.entries(keywordPatterns)) {\n    const matches = text.match(pattern);\n    if (matches) keywords[key] += matches.length;\n  }\n}\n\n// Topic activity (from forum topic IDs if available)\n// The Bot API doesn't directly list forum topics, so we infer from message thread IDs\nconst topicMessages = {};\nfor (const msg of messages) {\n  const threadId = msg.message_thread_id || 'general';\n  if (!topicMessages[threadId]) topicMessages[threadId] = 0;\n  topicMessages[threadId]++;\n}\n\n// Build snapshot\nconst now = new Date();\nconst snapshot = {\n  timestamp: now.toISOString(),\n  date: now.toISOString().split('T')[0],\n  kpis: {\n    groupMembers,\n    channelSubscribers,\n    crossPlatformReach: groupMembers + channelSubscribers,\n    adminsCount: admins.filter(a => !a.isBot).length\n  },\n  keywords,\n  topicActivity: topicMessages,\n  admins,\n  messagesSampled: messages.length,\n  chatTitle: chatInfo?.result?.title || 'Tech Immigrants'\n};\n\nreturn [{ json: snapshot }];"
+      },
+      "id": "transform-data",
+      "name": "Transform & Aggregate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/snapshot-latest.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: 'chore: update community stats ' + $json.date, content: Buffer.from(JSON.stringify($json, null, 2)).toString('base64'), sha: $vars.SNAPSHOT_SHA || undefined }) }}",
+        "options": {}
+      },
+      "id": "commit-latest",
+      "name": "Commit: snapshot-latest.json",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/history/{{ $json.date }}.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: 'chore: archive stats ' + $json.date, content: Buffer.from(JSON.stringify($json, null, 2)).toString('base64') }) }}",
+        "options": {}
+      },
+      "id": "commit-history",
+      "name": "Commit: history/{date}.json",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [780, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $vars.SAHAR_TELEGRAM_CHAT_ID }}",
+        "text": "={{ '📊 Community stats updated\\n\\n' + '👥 Group: ' + $json.kpis.groupMembers.toLocaleString() + ' members\\n' + '📢 Channel: ' + $json.kpis.channelSubscribers.toLocaleString() + ' subs\\n\\n' + '🔑 Top keywords today:\\n' + Object.entries($json.keywords).sort((a,b) => b[1]-a[1]).slice(0,5).map(([k,v]) => '  • ' + k + ': ' + v).join('\\n') + '\\n\\n' + '📈 Messages sampled: ' + $json.messagesSampled }}",
+        "additionalFields": {}
+      },
+      "id": "notify-sahar",
+      "name": "Notify Sahar (Optional)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1040, 300],
+      "credentials": {
+        "telegramApi": {
+          "id": "TELEGRAM_CREDENTIAL_ID",
+          "name": "TechImmigrants Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily 6AM EEST": {
+      "main": [
+        [
+          {
+            "node": "Get Member Count",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Chat Info",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Forum Stickers",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Channel Subscribers",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Recent Messages",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Admins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Member Count": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Chat Info": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Forum Stickers": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Channel Subscribers": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Recent Messages": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Admins": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform & Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Commit: snapshot-latest.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Commit: history/{date}.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Sahar (Optional)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "Tech Immigrants",
+      "createdAt": "2026-05-17T09:00:00.000Z",
+      "updatedAt": "2026-05-17T09:00:00.000Z"
+    }
+  ],
+  "pinData": {}
+}
