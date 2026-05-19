@@ -2,20 +2,20 @@
   "timestamp": "2026-05-14T19:00:00.000Z",
   "date": "2026-05-14",
   "kpis": {
-    "groupMembers": 17380,
-    "channelSubscribers": 7135,
+    "groupMembers": 17385,
+    "channelSubscribers": 7235,
     "crossPlatformReach": 52800,
     "adminsCount": 6
   },
   "keywords": {
-    "vpn": 8,
-    "resume": 35,
-    "ai": 28,
-    "reject": 12,
-    "visa": 16,
-    "interview": 18,
-    "salary": 7,
-    "job": 30
+    "vpn": 18,
+    "resume": 24,
+    "ai": 30,
+    "reject": 10,
+    "visa": 14,
+    "interview": 8,
+    "salary": 3,
+    "job": 18
   },
-  "messagesSampled": 60
+  "messagesSampled": 55
 }

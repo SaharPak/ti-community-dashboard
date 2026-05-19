@@ -1,6 +1,6 @@
 export const kpis = {
-  groupMembers: 17419,
-  channelSubscribers: 7271,
+  groupMembers: 17421,
+  channelSubscribers: 7270,
   crossPlatformReach: "53K+",
   recentGrowth: 134,
   youtubeEpisodes: 200,
@@ -60,8 +60,8 @@ export const contentPerformance = [
 ];
 
 export const platformDistribution = [
-  { platform: "Telegram Group", value: 17419, color: "#3b82f6" },
-  { platform: "Telegram Channel", value: 7271, color: "#6366f1" },
+  { platform: "Telegram Group", value: 17421, color: "#3b82f6" },
+  { platform: "Telegram Channel", value: 7270, color: "#6366f1" },
   { platform: "YouTube", value: 20000, color: "#ef4444" },
   { platform: "LinkedIn/X", value: 5000, color: "#10b981" },
   { platform: "GitHub", value: 36, color: "#f59e0b" },
