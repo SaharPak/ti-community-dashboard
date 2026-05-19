@@ -37,6 +37,14 @@ export function MemberGrowthChart({ history }: { history: HistoryEntry[] }) {
   const growth = filtered[filtered.length - 1].kpis.groupMembers - filtered[0].kpis.groupMembers;
   const channelGrowth = filtered[filtered.length - 1].kpis.channelSubscribers - filtered[0].kpis.channelSubscribers;
 
+  const memberMin = Math.min(...data.map((d) => d.members));
+  const memberMax = Math.max(...data.map((d) => d.members));
+  const channelMin = Math.min(...data.map((d) => d.channel));
+  const channelMax = Math.max(...data.map((d) => d.channel));
+
+  const memberPad = Math.max(Math.ceil((memberMax - memberMin) * 0.3), 5);
+  const channelPad = Math.max(Math.ceil((channelMax - channelMin) * 0.3), 5);
+
   return (
     <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
       <div className="flex items-center justify-between mb-1">
@@ -81,13 +89,31 @@ export function MemberGrowthChart({ history }: { history: HistoryEntry[] }) {
             </linearGradient>
           </defs>
           <XAxis dataKey="date" tick={{ fill: "#94a3b8", fontSize: 11 }} axisLine={false} tickLine={false} />
-          <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} width={50} domain={["dataMin - 20", "dataMax + 20"]} />
+          <YAxis
+            yAxisId="left"
+            tick={{ fill: "#818cf8", fontSize: 10 }}
+            axisLine={false}
+            tickLine={false}
+            width={50}
+            domain={[memberMin - memberPad, memberMax + memberPad]}
+            tickFormatter={(v) => v.toLocaleString()}
+          />
+          <YAxis
+            yAxisId="right"
+            orientation="right"
+            tick={{ fill: "#34d399", fontSize: 10 }}
+            axisLine={false}
+            tickLine={false}
+            width={50}
+            domain={[channelMin - channelPad, channelMax + channelPad]}
+            tickFormatter={(v) => v.toLocaleString()}
+          />
           <Tooltip
             contentStyle={{ background: "#1e293b", border: "1px solid #334155", borderRadius: 8, fontSize: 12 }}
             formatter={(value) => typeof value === "number" ? value.toLocaleString() : value}
           />
-          <Area type="monotone" dataKey="members" stroke="#6366f1" fill="url(#memberGradient)" strokeWidth={2} name="Group Members" />
-          <Area type="monotone" dataKey="channel" stroke="#10b981" fill="url(#channelGradient)" strokeWidth={2} name="Channel Subs" />
+          <Area yAxisId="left" type="monotone" dataKey="members" stroke="#6366f1" fill="url(#memberGradient)" strokeWidth={2} name="Group Members" />
+          <Area yAxisId="right" type="monotone" dataKey="channel" stroke="#10b981" fill="url(#channelGradient)" strokeWidth={2} name="Channel Subs" />
         </AreaChart>
       </ResponsiveContainer>
       <div className="flex items-center justify-center gap-6 mt-3">
