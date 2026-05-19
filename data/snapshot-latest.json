@@ -1,32 +1,34 @@
 {
-  "timestamp": "2026-05-17T19:00:00.000Z",
-  "date": "2026-05-17",
+  "timestamp": "2026-05-19T05:49:00.000Z",
+  "date": "2026-05-19",
   "kpis": {
-    "groupMembers": 17407,
-    "channelSubscribers": 7149,
+    "groupMembers": 17419,
+    "channelSubscribers": 7271,
     "crossPlatformReach": 53000,
     "adminsCount": 6
   },
   "topics": [
+    { "id": 76064, "name": "رزومه", "nameEn": "Resume", "lastActive": "2026-05-19T04:00:35Z", "status": "active" },
+    { "id": 1, "name": "General", "nameEn": "General", "lastActive": "2026-05-19T04:00:04Z", "status": "active" },
+    { "id": 183897, "name": "VPN", "nameEn": "VPN / AI Access", "lastActive": "2026-05-18T21:03:56Z", "status": "hot" },
+    { "id": 76091, "name": "فنی", "nameEn": "Technical", "lastActive": "2026-05-18T15:52:04Z", "status": "active" },
+    { "id": 76194, "name": "پیشنهاد برای ادمین های گروه", "nameEn": "Suggestions", "lastActive": "2026-05-18T09:01:30Z", "status": "moderate" },
+    { "id": 76086, "name": "زبان", "nameEn": "Language", "lastActive": "2026-05-17T19:13:58Z", "status": "moderate" },
     { "id": 163658, "name": "موقعیت های شغلی", "nameEn": "Job Openings", "lastActive": "2026-05-17T18:07:49Z", "status": "active" },
-    { "id": 1, "name": "General", "nameEn": "General", "lastActive": "2026-05-17T16:00:41Z", "status": "active" },
-    { "id": 76064, "name": "رزومه", "nameEn": "Resume", "lastActive": "2026-05-17T15:55:31Z", "status": "active" },
-    { "id": 183897, "name": "VPN", "nameEn": "VPN / AI Access", "lastActive": "2026-05-17T11:50:36Z", "status": "hot" },
-    { "id": 76086, "name": "زبان", "nameEn": "Language", "lastActive": "2026-05-17T11:32:35Z", "status": "moderate" },
-    { "id": 76091, "name": "فنی", "nameEn": "Technical", "lastActive": "2026-05-16T10:06:39Z", "status": "moderate" },
     { "id": 84803, "name": "اطلاع رسانی", "nameEn": "Announcements", "lastActive": "2026-05-15T06:40:24Z", "status": "low" },
-    { "id": 76092, "name": "مصاحبه", "nameEn": "Interview", "lastActive": "2026-05-08T10:49:33Z", "status": "dormant" },
-    { "id": 76194, "name": "پیشنهاد برای ادمین های گروه", "nameEn": "Suggestions", "lastActive": "2026-04-30T15:08:57Z", "status": "dormant" }
+    { "id": 76092, "name": "مصاحبه", "nameEn": "Interview", "lastActive": "2026-05-08T10:49:33Z", "status": "dormant" }
   ],
   "keywords": {
-    "vpn": 42,
-    "resume": 28,
-    "ai": 35,
-    "reject": 15,
-    "visa": 18,
+    "vpn": 48,
+    "resume": 32,
+    "ai": 40,
+    "reject": 16,
+    "visa": 20,
     "interview": 8,
     "salary": 6,
-    "job": 22
+    "job": 24,
+    "cursor": 12,
+    "shekan": 15
   },
   "admins": [
     { "name": "Sahar", "username": null, "status": "creator", "isBot": false },
@@ -34,18 +36,9 @@
     { "name": "M!n0o", "username": null, "status": "administrator", "isBot": false },
     { "name": "Reza Maghoul", "username": null, "status": "administrator", "isBot": false },
     { "name": "Boby Cloud", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Hessam", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Hessam Joon", "username": null, "status": "administrator", "isBot": false },
     { "name": "Group Booster", "username": null, "status": "administrator", "isBot": true }
   ],
-  "unansweredQuestions": [
-    {
-      "id": 183982,
-      "text": "از برنامه نویسان عزیز اینجا کسی انریل کار کرده از بحث بلو پرینت من سوال دارم",
-      "sender": "ZiZi",
-      "topic": "Technical",
-      "date": "2026-05-17T11:25:19Z",
-      "hoursUnanswered": 8
-    }
-  ],
-  "messagesSampled": 50
+  "unansweredQuestions": [],
+  "messagesSampled": 100
 }
