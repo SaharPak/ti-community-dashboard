@@ -7,6 +7,22 @@
     "crossPlatformReach": 53000,
     "adminsCount": 6
   },
+  "telegramStats": {
+    "members": 17400,
+    "membersChange": 53,
+    "membersPercent": "0.31%",
+    "messages": 184000,
+    "messagesChange": 615,
+    "messagesPercent": "0.34%",
+    "viewingMembers": 2800,
+    "viewingMembersChange": 263,
+    "viewingMembersPercent": "10.09%",
+    "postingMembers": 163,
+    "postingMembersChange": -8,
+    "postingMembersPercent": "4.68%",
+    "periodStart": "12.05.2026",
+    "periodEnd": "19.05.2026"
+  },
   "topics": [
     { "id": 76064, "name": "رزومه", "nameEn": "Resume", "lastActive": "2026-05-19T04:00:35Z", "status": "active" },
     { "id": 1, "name": "General", "nameEn": "General", "lastActive": "2026-05-19T04:00:04Z", "status": "active" },

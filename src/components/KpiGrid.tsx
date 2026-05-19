@@ -1,39 +1,39 @@
-import { Users, Radio, Globe, TrendingUp } from "lucide-react";
-import { StatCard } from "./StatCard";
-import type { Snapshot, HistoryEntry } from "../types";
-
-interface KpiGridProps {
-  snapshot: Snapshot;
-  history: HistoryEntry[];
+interface KpiStat {
+  label: string;
+  value: string;
+  change: number;
+  percent: string;
 }
 
-export function KpiGrid({ snapshot, history }: KpiGridProps) {
+interface KpiGridProps {
+  stats: KpiStat[];
+  dateRange: string;
+}
+
+export function KpiGrid({ stats, dateRange }: KpiGridProps) {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 h-full p-1">
-      <StatCard
-        label="Group Members"
-        value={snapshot.kpis.groupMembers}
-        trend="up"
-        trendValue={history.length >= 2 ? `+${snapshot.kpis.groupMembers - history[0].kpis.groupMembers} this week` : undefined}
-        icon={<Users size={18} />}
-      />
-      <StatCard
-        label="Channel Subscribers"
-        value={snapshot.kpis.channelSubscribers}
-        icon={<Radio size={18} />}
-      />
-      <StatCard
-        label="Cross-Platform"
-        value={snapshot.kpis.crossPlatformReach.toLocaleString() + "+"}
-        trend="up"
-        trendValue="All organic"
-        icon={<Globe size={18} />}
-      />
-      <StatCard
-        label="Messages Sampled"
-        value={snapshot.messagesSampled}
-        icon={<TrendingUp size={18} />}
-      />
+    <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5 h-full">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Overview</h3>
+        <span className="text-xs text-slate-500">{dateRange}</span>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat) => {
+          const isPositive = stat.change >= 0;
+          const changeColor = isPositive ? "text-emerald-400" : "text-red-400";
+          return (
+            <div key={stat.label}>
+              <div className="flex items-baseline gap-2">
+                <span className="text-2xl font-bold text-slate-50">{stat.value}</span>
+                <span className={`text-xs font-medium ${changeColor}`}>
+                  {isPositive ? "+" : ""}{stat.change.toLocaleString()} ({stat.percent})
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-1">{stat.label}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

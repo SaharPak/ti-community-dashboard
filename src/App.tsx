@@ -59,8 +59,16 @@ function App() {
     setLayout([...DEFAULT_LAYOUT]);
   };
 
+  const tg = snapshot.telegramStats;
+  const kpiStats = [
+    { label: "Members", value: "17,4K", change: tg.membersChange, percent: tg.membersPercent },
+    { label: "Messages", value: "184K", change: tg.messagesChange, percent: tg.messagesPercent },
+    { label: "Viewing Members", value: "2,8K", change: tg.viewingMembersChange, percent: tg.viewingMembersPercent },
+    { label: "Posting Members", value: String(tg.postingMembers), change: tg.postingMembersChange, percent: tg.postingMembersPercent },
+  ];
+
   const widgetMap: Record<string, React.ReactNode> = {
-    kpis: <KpiGrid snapshot={snapshot} history={history} />,
+    kpis: <KpiGrid stats={kpiStats} dateRange={`${tg.periodStart} – ${tg.periodEnd}`} />,
     "member-growth": <MemberGrowthChart history={history} />,
     "topic-activity": <TopicActivityChart topics={snapshot.topics} />,
     "pain-points": (
