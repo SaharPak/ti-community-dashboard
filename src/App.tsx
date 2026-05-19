@@ -30,9 +30,12 @@ function App() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-2">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-50">Tech Immigrants</h1>
-            <p className="text-sm text-slate-400 mt-1">Community Management Dashboard</p>
+          <div className="flex items-center gap-3">
+            <img src="/favicon.svg" alt="Tech Immigrants logo" className="w-9 h-9" />
+            <div>
+              <h1 className="text-2xl font-bold text-slate-50">Tech Immigrants</h1>
+              <p className="text-sm text-slate-400 mt-1">Community Management Dashboard</p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
