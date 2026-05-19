@@ -37,7 +37,7 @@ export const DEFAULT_LAYOUT: LayoutItem[] = [
   { i: "admins",          x: 0,  y: 74, w: COLS, h: 8,  minH: 5, minW: 4 },
 ];
 
-const STORAGE_KEY = "ti-dashboard-layout";
+const STORAGE_KEY = "ti-dashboard-layout-v2";
 
 export function loadLayout(): LayoutItem[] {
   try {
