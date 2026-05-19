@@ -1,5 +1,5 @@
 export type TopicStatus = "hot" | "active" | "moderate" | "low" | "dormant";
-export type Priority = "critical" | "high" | "moderate" | "medium" | "low";
+export type Priority = "critical" | "high" | "moderate" | "medium" | "low" | "done";
 
 export interface Snapshot {
   timestamp: string;
