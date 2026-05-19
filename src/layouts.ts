@@ -23,7 +23,7 @@ export const WIDGETS: WidgetConfig[] = [
 const COLS = 12;
 
 export const DEFAULT_LAYOUT: LayoutItem[] = [
-  { i: "kpis",            x: 0,  y: 0,  w: COLS, h: 3,  minH: 3, minW: 6 },
+  { i: "kpis",            x: 0,  y: 0,  w: COLS, h: 7,  minH: 5, minW: 6 },
   { i: "member-growth",   x: 0,  y: 3,  w: COLS, h: 7,  minH: 5, minW: 4 },
   { i: "topic-activity",  x: 0,  y: 10, w: COLS, h: 10, minH: 7, minW: 4 },
   { i: "pain-points",     x: 0,  y: 20, w: COLS, h: 8,  minH: 5, minW: 4 },
