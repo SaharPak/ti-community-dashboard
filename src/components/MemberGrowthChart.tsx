@@ -1,26 +1,73 @@
+import { useState } from "react";
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import type { HistoryEntry } from "../types";
 
+type DateRange = "3d" | "7d" | "14d" | "30d" | "all";
+
+const RANGE_OPTIONS: { value: DateRange; label: string }[] = [
+  { value: "3d", label: "3D" },
+  { value: "7d", label: "7D" },
+  { value: "14d", label: "14D" },
+  { value: "30d", label: "30D" },
+  { value: "all", label: "All" },
+];
+
+function filterByRange(history: HistoryEntry[], range: DateRange): HistoryEntry[] {
+  if (range === "all") return history;
+  const days = parseInt(range);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const filtered = history.filter((e) => e.date >= cutoffStr);
+  return filtered.length >= 2 ? filtered : history.slice(-2);
+}
+
 export function MemberGrowthChart({ history }: { history: HistoryEntry[] }) {
+  const [range, setRange] = useState<DateRange>("7d");
+
   if (history.length < 2) return null;
 
-  const data = history.map((entry) => ({
+  const filtered = filterByRange(history, range);
+  const data = filtered.map((entry) => ({
     date: entry.date.slice(5),
     members: entry.kpis.groupMembers,
     channel: entry.kpis.channelSubscribers,
   }));
 
-  const growth = history[history.length - 1].kpis.groupMembers - history[0].kpis.groupMembers;
+  const growth = filtered[filtered.length - 1].kpis.groupMembers - filtered[0].kpis.groupMembers;
+  const channelGrowth = filtered[filtered.length - 1].kpis.channelSubscribers - filtered[0].kpis.channelSubscribers;
 
   return (
     <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
-      <div className="flex items-baseline justify-between mb-1">
+      <div className="flex items-center justify-between mb-1">
         <h3 className="text-sm font-semibold text-slate-200">Member Growth</h3>
+        <div className="flex items-center gap-1">
+          {RANGE_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setRange(opt.value)}
+              className={`px-2 py-0.5 text-[10px] font-medium rounded transition-colors ${
+                range === opt.value
+                  ? "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"
+                  : "text-slate-500 hover:text-slate-300 border border-transparent"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="flex items-center gap-4 mb-4">
         <span className={`text-xs font-medium ${growth >= 0 ? "text-emerald-400" : "text-red-400"}`}>
-          {growth >= 0 ? "+" : ""}{growth} in {history.length} days
+          Group {growth >= 0 ? "+" : ""}{growth}
+        </span>
+        <span className={`text-xs font-medium ${channelGrowth >= 0 ? "text-emerald-400" : "text-red-400"}`}>
+          Channel {channelGrowth >= 0 ? "+" : ""}{channelGrowth}
+        </span>
+        <span className="text-xs text-slate-500">
+          in {filtered.length} days
         </span>
       </div>
-      <p className="text-xs text-slate-500 mb-4">Group and channel subscriber trend</p>
       <ResponsiveContainer width="100%" height={180}>
         <AreaChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
           <defs>
