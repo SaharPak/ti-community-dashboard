@@ -7,16 +7,17 @@ This workflow collects daily statistics from the Tech Immigrants Telegram group 
 ```
 Daily at 6:00 AM EEST
   → n8n calls Telegram Bot API (6 parallel requests)
+  → Fetches current snapshot SHA from GitHub (for file updates)
   → Code node transforms & aggregates data
   → Commits snapshot-latest.json + history/{date}.json to GitHub
-  → Vercel/Netlify auto-deploys on push
+  → Cloudflare Pages auto-deploys on push
   → Dashboard shows fresh data within ~2 minutes
 ```
 
 ## Prerequisites
 
 1. **n8n instance** — cloud (n8n.cloud) or self-hosted
-2. **Telegram Bot** — the same bot you use for the YouTube distribute workflow (must be admin in @techimmigrants group)
+2. **Telegram Bot** — must be admin in @techimmigrants group with "Read Messages" permission
 3. **GitHub Personal Access Token** — fine-grained, scoped to this repo
 
 ---
@@ -63,6 +64,8 @@ Go to **Settings** → **Variables** and create these:
 | `SAHAR_TELEGRAM_CHAT_ID` | Your personal chat ID | For the optional notification |
 | `GITHUB_REPO` | `SaharPak/ti-community-dashboard` | GitHub repo in `owner/name` format |
 
+> **Note:** The `SNAPSHOT_SHA` variable is no longer needed — the workflow now auto-fetches the current file SHA before each commit.
+
 ### Finding the Group Chat ID
 
 The group chat ID for @techimmigrants is `-1001264215335` (supergroups use `-100` prefix + channel ID `1264215335`).
@@ -81,37 +84,29 @@ The group chat ID for @techimmigrants is `-1001264215335` (supergroups use `-100
 
 ---
 
-## Step 5: Handle the SHA for snapshot-latest.json
-
-The GitHub API requires the current file SHA to update an existing file. Two approaches:
-
-### Option A: First Run (file doesn't exist yet)
-
-The first commit will create the file. Remove the `sha` field from the commit node's JSON body for the first run, or set the n8n variable `SNAPSHOT_SHA` to empty.
-
-### Option B: Auto-fetch SHA (recommended)
-
-Add a node before the commit that fetches the current SHA:
-
-```
-GET https://api.github.com/repos/{owner}/{repo}/contents/data/snapshot-latest.json
-```
-
-Extract `response.sha` and pass it to the commit node. The workflow JSON already references `$vars.SNAPSHOT_SHA` as a fallback — you can either:
-- Manually update this variable after each run
-- Add a "Get SHA" HTTP node (better for automation)
-
----
-
-## Step 6: Test & Activate
+## Step 5: Test & Activate
 
 1. Click **Test Workflow** with manual trigger
 2. Check that:
    - Telegram API returns member count
+   - "Get Snapshot SHA" returns the current file (or 404 on first run — both are fine)
    - Transform node produces valid JSON
    - GitHub commit succeeds (check the repo)
    - Notification arrives in your Telegram DM (optional)
-3. Toggle the workflow **ON**
+3. Toggle the workflow **ON** — it will run daily at 6:00 AM EEST
+
+---
+
+## How the SHA Auto-Fetch Works
+
+The GitHub Contents API requires the current file SHA to update an existing file. The workflow handles this automatically:
+
+1. **Get Snapshot SHA** node fetches `data/snapshot-latest.json` metadata from GitHub
+2. If the file exists, the SHA is extracted and passed to the commit node
+3. If the file doesn't exist (first run), `continueOnFail` lets the workflow proceed — the commit creates the file without a SHA
+4. The `_snapshotSha` field is stripped from the output before committing (it's internal metadata only)
+
+No manual SHA management required.
 
 ---
 
@@ -154,10 +149,11 @@ Each run produces two commits:
 | Problem | Solution |
 |---------|----------|
 | Bot can't read messages | Ensure bot is admin in the group with read access |
-| GitHub commit 409 conflict | SHA mismatch — fetch fresh SHA before committing |
+| GitHub commit 409 conflict | SHA mismatch — the auto-fetch should prevent this; check if another process is committing simultaneously |
 | GitHub commit 404 | Check repo name in `GITHUB_REPO` variable |
 | Empty keyword counts | Bot may not receive messages via getUpdates in groups — consider using a webhook or the MTProto approach |
-| Rate limiting | Telegram Bot API allows 30 requests/second — 6 parallel calls is fine |
+| Rate limiting | Telegram Bot API allows 30 requests/second — 7 parallel calls is fine |
+| Get Snapshot SHA returns 404 | Normal on first run; the commit will create the file |
 
 ---
 
