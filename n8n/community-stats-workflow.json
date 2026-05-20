@@ -138,8 +138,28 @@
     },
     {
       "parameters": {
+        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/snapshot-latest.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "get-snapshot-sha",
+      "name": "Get Snapshot SHA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [240, 1000],
+      "continueOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
         "mode": "runOnceForAllItems",
-        "jsCode": "// Collect all inputs from previous nodes\nconst memberCount = $('Get Member Count').first().json;\nconst chatInfo = $('Get Chat Info').first().json;\nconst channelCount = $('Get Channel Subscribers').first().json;\nconst recentMessages = $('Get Recent Messages').first().json;\nconst adminsData = $('Get Admins').first().json;\n\n// Parse member counts\nconst groupMembers = memberCount?.result || 0;\nconst channelSubscribers = channelCount?.result || 0;\n\n// Parse admin list\nconst admins = (adminsData?.result || []).map(a => ({\n  name: [a.user.first_name, a.user.last_name].filter(Boolean).join(' '),\n  username: a.user.username || null,\n  status: a.status,\n  isBot: a.user.is_bot\n}));\n\n// Parse recent messages for keyword analysis\nconst messages = (recentMessages?.result || []).map(u => u.message).filter(Boolean);\n\n// Keyword tracking\nconst keywords = {\n  vpn: 0,\n  resume: 0,\n  ai: 0,\n  reject: 0,\n  visa: 0,\n  interview: 0,\n  salary: 0,\n  job: 0\n};\n\nconst keywordPatterns = {\n  vpn: /vpn|فیلتر|شکن|proxy|تحریم/gi,\n  resume: /resume|رزومه|cv|cover.?letter|کاور.?لتر/gi,\n  ai: /ai|هوش.?مصنوعی|claude|chatgpt|cursor|gemini|machine.?learning/gi,\n  reject: /reject|ریجکت|رد.?شد/gi,\n  visa: /visa|ویزا|اقامت|مهاجرت/gi,\n  interview: /interview|مصاحبه/gi,\n  salary: /salary|حقوق|درآمد/gi,\n  job: /job|استخدام|شغل|کار/gi\n};\n\nfor (const msg of messages) {\n  const text = msg.text || '';\n  for (const [key, pattern] of Object.entries(keywordPatterns)) {\n    const matches = text.match(pattern);\n    if (matches) keywords[key] += matches.length;\n  }\n}\n\n// Topic activity (from forum topic IDs if available)\n// The Bot API doesn't directly list forum topics, so we infer from message thread IDs\nconst topicMessages = {};\nfor (const msg of messages) {\n  const threadId = msg.message_thread_id || 'general';\n  if (!topicMessages[threadId]) topicMessages[threadId] = 0;\n  topicMessages[threadId]++;\n}\n\n// Build snapshot\nconst now = new Date();\nconst snapshot = {\n  timestamp: now.toISOString(),\n  date: now.toISOString().split('T')[0],\n  kpis: {\n    groupMembers,\n    channelSubscribers,\n    crossPlatformReach: groupMembers + channelSubscribers,\n    adminsCount: admins.filter(a => !a.isBot).length\n  },\n  keywords,\n  topicActivity: topicMessages,\n  admins,\n  messagesSampled: messages.length,\n  chatTitle: chatInfo?.result?.title || 'Tech Immigrants'\n};\n\nreturn [{ json: snapshot }];"
+        "jsCode": "const memberCount = $('Get Member Count').first().json;\nconst chatInfo = $('Get Chat Info').first().json;\nconst channelCount = $('Get Channel Subscribers').first().json;\nconst recentMessages = $('Get Recent Messages').first().json;\nconst adminsData = $('Get Admins').first().json;\nconst snapshotShaResponse = $('Get Snapshot SHA').first().json;\n\nconst groupMembers = memberCount?.result || 0;\nconst channelSubscribers = channelCount?.result || 0;\n\nconst admins = (adminsData?.result || []).map(a => ({\n  name: [a.user.first_name, a.user.last_name].filter(Boolean).join(' '),\n  username: a.user.username || null,\n  status: a.status,\n  isBot: a.user.is_bot\n}));\n\nconst messages = (recentMessages?.result || []).map(u => u.message).filter(Boolean);\n\nconst keywords = {\n  vpn: 0, resume: 0, ai: 0, reject: 0,\n  visa: 0, interview: 0, salary: 0, job: 0\n};\n\nconst keywordPatterns = {\n  vpn: /vpn|فیلتر|شکن|proxy|تحریم/gi,\n  resume: /resume|رزومه|cv|cover.?letter|کاور.?لتر/gi,\n  ai: /ai|هوش.?مصنوعی|claude|chatgpt|cursor|gemini|machine.?learning/gi,\n  reject: /reject|ریجکت|رد.?شد/gi,\n  visa: /visa|ویزا|اقامت|مهاجرت/gi,\n  interview: /interview|مصاحبه/gi,\n  salary: /salary|حقوق|درآمد/gi,\n  job: /job|استخدام|شغل|کار/gi\n};\n\nfor (const msg of messages) {\n  const text = msg.text || '';\n  for (const [key, pattern] of Object.entries(keywordPatterns)) {\n    const matches = text.match(pattern);\n    if (matches) keywords[key] += matches.length;\n  }\n}\n\nconst topicMessages = {};\nfor (const msg of messages) {\n  const threadId = msg.message_thread_id || 'general';\n  if (!topicMessages[threadId]) topicMessages[threadId] = 0;\n  topicMessages[threadId]++;\n}\n\nconst now = new Date();\nconst snapshot = {\n  timestamp: now.toISOString(),\n  date: now.toISOString().split('T')[0],\n  kpis: {\n    groupMembers,\n    channelSubscribers,\n    crossPlatformReach: groupMembers + channelSubscribers,\n    adminsCount: admins.filter(a => !a.isBot).length\n  },\n  keywords,\n  topicActivity: topicMessages,\n  admins,\n  messagesSampled: messages.length,\n  chatTitle: chatInfo?.result?.title || 'Tech Immigrants'\n};\n\nconst snapshotSha = snapshotShaResponse?.sha || null;\n\nreturn [{ json: { ...snapshot, _snapshotSha: snapshotSha } }];"
       },
       "id": "transform-data",
       "name": "Transform & Aggregate",
@@ -155,7 +175,7 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ message: 'chore: update community stats ' + $json.date, content: Buffer.from(JSON.stringify($json, null, 2)).toString('base64'), sha: $vars.SNAPSHOT_SHA || undefined }) }}",
+        "jsonBody": "={{ (() => { const d = Object.assign({}, $json); const sha = d._snapshotSha; delete d._snapshotSha; const body = { message: 'chore: update community stats ' + d.date, content: Buffer.from(JSON.stringify(d, null, 2)).toString('base64') }; if (sha) body.sha = sha; return JSON.stringify(body); })() }}",
         "options": {}
       },
       "id": "commit-latest",
@@ -178,7 +198,7 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ message: 'chore: archive stats ' + $json.date, content: Buffer.from(JSON.stringify($json, null, 2)).toString('base64') }) }}",
+        "jsonBody": "={{ (() => { const d = Object.assign({}, $json); delete d._snapshotSha; return JSON.stringify({ message: 'chore: archive stats ' + d.date, content: Buffer.from(JSON.stringify(d, null, 2)).toString('base64') }); })() }}",
         "options": {}
       },
       "id": "commit-history",
@@ -245,6 +265,11 @@
             "node": "Get Admins",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Get Snapshot SHA",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -305,6 +330,17 @@
       ]
     },
     "Get Admins": {
+      "main": [
+        [
+          {
+            "node": "Transform & Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Snapshot SHA": {
       "main": [
         [
           {
