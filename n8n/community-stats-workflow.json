@@ -17,7 +17,10 @@
       "name": "Daily 6AM EEST",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
-      "position": [0, 0]
+      "position": [
+        0,
+        0
+      ]
     },
     {
       "parameters": {
@@ -37,7 +40,10 @@
       "name": "Get Member Count",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, -200]
+      "position": [
+        240,
+        -200
+      ]
     },
     {
       "parameters": {
@@ -57,7 +63,10 @@
       "name": "Get Chat Info",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 0]
+      "position": [
+        240,
+        0
+      ]
     },
     {
       "parameters": {
@@ -68,7 +77,10 @@
       "name": "Get Forum Stickers",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 200],
+      "position": [
+        240,
+        200
+      ],
       "continueOnFail": true
     },
     {
@@ -89,7 +101,10 @@
       "name": "Get Channel Subscribers",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 400]
+      "position": [
+        240,
+        400
+      ]
     },
     {
       "parameters": {
@@ -113,7 +128,10 @@
       "name": "Get Recent Messages",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 600],
+      "position": [
+        240,
+        600
+      ],
       "continueOnFail": true
     },
     {
@@ -134,7 +152,10 @@
       "name": "Get Admins",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 800]
+      "position": [
+        240,
+        800
+      ]
     },
     {
       "parameters": {
@@ -147,7 +168,10 @@
       "name": "Get Snapshot SHA",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [240, 1000],
+      "position": [
+        240,
+        1000
+      ],
       "continueOnFail": true,
       "credentials": {
         "httpHeaderAuth": {
@@ -165,7 +189,10 @@
       "name": "Transform & Aggregate",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [520, 300]
+      "position": [
+        520,
+        300
+      ]
     },
     {
       "parameters": {
@@ -182,7 +209,10 @@
       "name": "Commit: snapshot-latest.json",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [780, 200],
+      "position": [
+        1240,
+        200
+      ],
       "credentials": {
         "httpHeaderAuth": {
           "id": "GITHUB_TOKEN_CREDENTIAL_ID",
@@ -205,7 +235,10 @@
       "name": "Commit: history/{date}.json",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [780, 400],
+      "position": [
+        1240,
+        400
+      ],
       "credentials": {
         "httpHeaderAuth": {
           "id": "GITHUB_TOKEN_CREDENTIAL_ID",
@@ -216,20 +249,72 @@
     {
       "parameters": {
         "chatId": "={{ $vars.SAHAR_TELEGRAM_CHAT_ID }}",
-        "text": "={{ '📊 Community stats updated\\n\\n' + '👥 Group: ' + $json.kpis.groupMembers.toLocaleString() + ' members\\n' + '📢 Channel: ' + $json.kpis.channelSubscribers.toLocaleString() + ' subs\\n\\n' + '🔑 Top keywords today:\\n' + Object.entries($json.keywords).sort((a,b) => b[1]-a[1]).slice(0,5).map(([k,v]) => '  • ' + k + ': ' + v).join('\\n') + '\\n\\n' + '📈 Messages sampled: ' + $json.messagesSampled }}",
+        "text": "={{ '🤖 Daily community briefing\\n\\n' + $json.aiInsights.briefing + '\\n\\n📊 ' + $json.kpis.groupMembers.toLocaleString() + ' members · ' + $json.kpis.channelSubscribers.toLocaleString() + ' subs · ' + $json.messagesSampled + ' msgs sampled' }}",
         "additionalFields": {}
       },
       "id": "notify-sahar",
       "name": "Notify Sahar (Optional)",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
-      "position": [1040, 300],
+      "position": [
+        1480,
+        300
+      ],
       "credentials": {
         "telegramApi": {
           "id": "TELEGRAM_CREDENTIAL_ID",
           "name": "TechImmigrants Bot"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are the community insights assistant for \"Tech Immigrants\", a tech-immigrant community in Finland with {{ $json.kpis.crossPlatformReach }} people across platforms.\n\nToday's snapshot ({{ $json.date }}):\n- Group members: {{ $json.kpis.groupMembers }}\n- Channel subscribers: {{ $json.kpis.channelSubscribers }}\n- Messages sampled today: {{ $json.messagesSampled }}\n- Keyword counts (English + Persian matches): {{ JSON.stringify($json.keywords) }}\n- Topic activity by thread: {{ JSON.stringify($json.topicActivity) }}\n\nWrite a short daily briefing for the admin:\n1. Top 3 emerging themes or pain points this week (infer from the keyword counts).\n2. The single most pressing thing to address today.\n3. One concrete action to help members.\nKeep it under 120 words, warm and direct. Use bullet points starting with a dash.",
+        "options": {
+          "systemMessage": "You are a concise, insightful community manager assistant. You turn raw community stats into a clear, actionable daily briefing. No preamble, no fluff."
+        }
+      },
+      "id": "ai-community-insights",
+      "name": "AI Community Insights",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        780,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "id": "openai-chat-model",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Re-attach the full snapshot (from Transform) and add the AI briefing\nconst snapshot = $('Transform & Aggregate').item.json;\nconst briefing = $json.output || '';\nreturn [{ json: { ...snapshot, aiInsights: { generatedAt: new Date().toISOString(), briefing } } }];"
+      },
+      "id": "attach-ai-insights",
+      "name": "Attach AI to Snapshot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        300
+      ]
     }
   ],
   "connections": {
@@ -355,6 +440,28 @@
       "main": [
         [
           {
+            "node": "AI Community Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Community Insights": {
+      "main": [
+        [
+          {
+            "node": "Attach AI to Snapshot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach AI to Snapshot": {
+      "main": [
+        [
+          {
             "node": "Commit: snapshot-latest.json",
             "type": "main",
             "index": 0
@@ -367,6 +474,17 @@
           {
             "node": "Notify Sahar (Optional)",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Community Insights",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]

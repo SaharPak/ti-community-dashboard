@@ -56,5 +56,9 @@
     { "name": "Group Booster", "username": null, "status": "administrator", "isBot": true }
   ],
   "unansweredQuestions": [],
-  "messagesSampled": 100
+  "messagesSampled": 100,
+  "aiInsights": {
+    "generatedAt": "2026-05-19T05:49:30.000Z",
+    "briefing": "- VPN / AI access is the dominant theme this week (48 mentions, spiking with \"shekan\" at 15). Members are struggling to reach AI tools behind filtering.\n- Resume and job-seeking remain high (resume 32, job 24, ai 40): the community is in active job-hunt mode.\n- Most pressing today: the VPN topic is \"hot\" and AI access is blocking people from the tools they need to upskill.\n- Action: pin a short, vetted guide on reliable AI access + a resume-review thread to channel the two biggest needs into one place."
+  }
 }

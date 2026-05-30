@@ -33,6 +33,12 @@ export interface Snapshot {
   admins: Admin[];
   unansweredQuestions: UnansweredQuestion[];
   messagesSampled: number;
+  aiInsights?: AiInsights;
+}
+
+export interface AiInsights {
+  generatedAt: string;
+  briefing: string;
 }
 
 export interface Topic {
