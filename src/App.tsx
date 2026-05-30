@@ -13,6 +13,7 @@ import { GrowthLevers } from "./components/GrowthLevers";
 import { MemberGrowthChart } from "./components/MemberGrowthChart";
 import { KeywordTrends } from "./components/KeywordTrends";
 import { UnansweredQuestions } from "./components/UnansweredQuestions";
+import { AiBriefing } from "./components/AiBriefing";
 import { DashboardWidget } from "./components/DashboardWidget";
 import { useSnapshot, useHistory } from "./hooks/useData";
 import { DEFAULT_LAYOUT, loadLayout, saveLayout, resetLayout } from "./layouts";
@@ -68,6 +69,7 @@ function App() {
   ];
 
   const widgetMap: Record<string, React.ReactNode> = {
+    "ai-briefing": <AiBriefing insights={snapshot.aiInsights} />,
     kpis: <KpiGrid stats={kpiStats} dateRange={`${tg.periodStart} – ${tg.periodEnd}`} />,
     "member-growth": <MemberGrowthChart history={history} />,
     "topic-activity": <TopicActivityChart topics={snapshot.topics} />,

@@ -6,6 +6,7 @@ export interface WidgetConfig {
 }
 
 export const WIDGETS: WidgetConfig[] = [
+  { id: "ai-briefing", label: "AI Daily Briefing" },
   { id: "kpis", label: "KPIs" },
   { id: "member-growth", label: "Member Growth" },
   { id: "topic-activity", label: "Topic Activity" },
@@ -23,21 +24,22 @@ export const WIDGETS: WidgetConfig[] = [
 const COLS = 12;
 
 export const DEFAULT_LAYOUT: LayoutItem[] = [
-  { i: "kpis",            x: 0,  y: 0,  w: COLS, h: 7,  minH: 5, minW: 6 },
-  { i: "member-growth",   x: 0,  y: 3,  w: COLS, h: 7,  minH: 5, minW: 4 },
-  { i: "topic-activity",  x: 0,  y: 10, w: COLS, h: 10, minH: 7, minW: 4 },
-  { i: "pain-points",     x: 0,  y: 20, w: COLS, h: 8,  minH: 5, minW: 4 },
-  { i: "keyword-trends",  x: 0,  y: 28, w: COLS, h: 9,  minH: 6, minW: 4 },
-  { i: "unanswered",      x: 0,  y: 37, w: COLS, h: 5,  minH: 3, minW: 4 },
-  { i: "engagement",      x: 0,  y: 42, w: 6,    h: 11, minH: 8, minW: 4 },
-  { i: "content",         x: 6,  y: 42, w: 6,    h: 11, minH: 8, minW: 4 },
-  { i: "growth",          x: 0,  y: 53, w: 6,    h: 12, minH: 8, minW: 4 },
-  { i: "monetization",    x: 6,  y: 53, w: 6,    h: 12, minH: 8, minW: 4 },
-  { i: "actions",         x: 0,  y: 65, w: COLS, h: 9,  minH: 6, minW: 6 },
-  { i: "admins",          x: 0,  y: 74, w: COLS, h: 8,  minH: 5, minW: 4 },
+  { i: "ai-briefing",     x: 0,  y: 0,  w: COLS, h: 6,  minH: 4, minW: 4 },
+  { i: "kpis",            x: 0,  y: 6,  w: COLS, h: 7,  minH: 5, minW: 6 },
+  { i: "member-growth",   x: 0,  y: 13, w: COLS, h: 7,  minH: 5, minW: 4 },
+  { i: "topic-activity",  x: 0,  y: 20, w: COLS, h: 10, minH: 7, minW: 4 },
+  { i: "pain-points",     x: 0,  y: 30, w: COLS, h: 8,  minH: 5, minW: 4 },
+  { i: "keyword-trends",  x: 0,  y: 38, w: COLS, h: 9,  minH: 6, minW: 4 },
+  { i: "unanswered",      x: 0,  y: 47, w: COLS, h: 5,  minH: 3, minW: 4 },
+  { i: "engagement",      x: 0,  y: 52, w: 6,    h: 11, minH: 8, minW: 4 },
+  { i: "content",         x: 6,  y: 52, w: 6,    h: 11, minH: 8, minW: 4 },
+  { i: "growth",          x: 0,  y: 63, w: 6,    h: 12, minH: 8, minW: 4 },
+  { i: "monetization",    x: 6,  y: 63, w: 6,    h: 12, minH: 8, minW: 4 },
+  { i: "actions",         x: 0,  y: 75, w: COLS, h: 9,  minH: 6, minW: 6 },
+  { i: "admins",          x: 0,  y: 84, w: COLS, h: 8,  minH: 5, minW: 4 },
 ];
 
-const STORAGE_KEY = "ti-dashboard-layout-v2";
+const STORAGE_KEY = "ti-dashboard-layout-v3";
 
 export function loadLayout(): LayoutItem[] {
   try {
