@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-05-31T10:28:08.510Z",
+  "timestamp": "2026-05-31T10:42:09.243Z",
   "date": "2026-05-31",
   "kpis": {
-    "groupMembers": 3,
+    "groupMembers": 0,
     "channelSubscribers": 7381,
-    "crossPlatformReach": 7384,
-    "adminsCount": 2
+    "crossPlatformReach": 7381,
+    "adminsCount": 0
   },
   "keywords": {
     "vpn": 0,
@@ -18,32 +18,13 @@
     "job": 0
   },
   "topicActivity": {
-    "general": 6
+    "general": 7
   },
-  "admins": [
-    {
-      "name": "TI_bot",
-      "username": "techimigrants_bot",
-      "status": "administrator",
-      "isBot": true
-    },
-    {
-      "name": "Sam",
-      "username": "Issumaa",
-      "status": "administrator",
-      "isBot": false
-    },
-    {
-      "name": "Sahar",
-      "username": "Saharlead",
-      "status": "creator",
-      "isBot": false
-    }
-  ],
-  "messagesSampled": 6,
+  "admins": [],
+  "messagesSampled": 7,
   "chatTitle": "Sahar & Hessam Joon ❤️",
   "aiInsights": {
-    "generatedAt": "2026-05-31T10:28:16.857Z",
-    "briefing": "- No specific themes emerged from keyword analysis today; all sampled messages were general in nature.\n- The single most pressing thing to address is the lack of engagement or discussion threads. Members might feel isolated without active community interaction.\n- Suggest creating a \"Tech News & Trends\" thread to share industry updates and spark discussions, helping members stay connected and informed."
+    "generatedAt": "2026-05-31T10:42:15.970Z",
+    "briefing": "- No specific themes emerged this week based on keyword counts.\n- The general thread activity suggests ongoing discussions but no clear pain points.\n- Addressing the lack of structured support: Create a \"Job Search & Networking\" forum to help members find opportunities and connect.\n\nLet's get proactive!"
   }
 }
