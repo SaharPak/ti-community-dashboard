@@ -1,7 +1,11 @@
 {
   "name": "ti-community-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Real-time analytics dashboard for a 17K+ member tech community, fed by an automated Telegram-to-data pipeline.",
+  "author": "Sahar Pakseresht",
+  "license": "MIT",
+  "homepage": "https://github.com/SaharPak/ti-community-dashboard",
   "type": "module",
   "scripts": {
     "dev": "vite",

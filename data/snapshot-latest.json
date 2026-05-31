@@ -48,12 +48,12 @@
   },
   "admins": [
     { "name": "Sahar", "username": null, "status": "creator", "isBot": false },
-    { "name": "Ramin", "username": null, "status": "administrator", "isBot": false },
-    { "name": "M!n0o", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Reza Maghoul", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Boby Cloud", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Hessam Joon", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Group Booster", "username": null, "status": "administrator", "isBot": true }
+    { "name": "Moderator B", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Moderator D", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Moderator C", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Moderator E", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Moderator A", "username": null, "status": "administrator", "isBot": false },
+    { "name": "Community Bot", "username": null, "status": "administrator", "isBot": true }
   ],
   "unansweredQuestions": [],
   "messagesSampled": 100,
