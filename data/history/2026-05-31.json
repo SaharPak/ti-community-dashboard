@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T11:17:54.147Z",
+  "timestamp": "2026-05-31T11:31:36.497Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 17437,
@@ -9,16 +9,16 @@
   },
   "keywords": {
     "vpn": 0,
-    "resume": 0,
-    "ai": 0,
+    "resume": 1,
+    "ai": 1,
     "reject": 0,
-    "visa": 0,
+    "visa": 1,
     "interview": 0,
     "salary": 0,
-    "job": 0
+    "job": 1
   },
   "topicActivity": {
-    "general": 10
+    "general": 11
   },
   "admins": [
     {
@@ -52,10 +52,10 @@
       "isBot": false
     }
   ],
-  "messagesSampled": 10,
+  "messagesSampled": 11,
   "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T11:18:09.765Z",
-    "briefing": "- No clear emerging themes or pain points were identified this week based on keyword analysis.\n- The single most pressing thing to address today is the lack of specific topic discussions. Encourage more targeted threads around career development, networking, or tech trends.\n- Suggest creating a \"Tech Talks\" series where members can share insights and experiences, fostering engagement and support."
+    "generatedAt": "2026-05-31T11:31:51.394Z",
+    "briefing": "- Emerging themes/pain points: \n  - Job-related discussions (e.g., interviews, salary)\n  - Visa concerns\n  - AI technology conversations\n\n- Most pressing thing to address today:\n  Visa issues are the top concern.\n\n- Concrete action:\n  Suggest setting up a dedicated thread for visa updates and advice."
   }
 }
