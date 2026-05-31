@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T08:49:43.260Z",
+  "timestamp": "2026-05-31T10:25:08.428Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 3,
@@ -43,7 +43,7 @@
   "messagesSampled": 6,
   "chatTitle": "Sahar & Hessam Joon ❤️",
   "aiInsights": {
-    "generatedAt": "2026-05-31T08:49:51.676Z",
-    "briefing": "- No clear emerging themes or pain points were identified this week based on keyword analysis.\n- The single most pressing thing to address today is the lack of active engagement; only 3 group members are currently participating.\n- Suggest sending out a gentle reminder to all members, encouraging them to share their experiences and challenges. This can help reinvigorate the community and foster more interaction."
+    "generatedAt": "2026-05-31T10:25:17.561Z",
+    "briefing": "- No clear emerging themes or pain points based on keyword analysis this week.\n- The general thread activity suggests members might be discussing broad topics like tech updates, local integration, or personal experiences.\n- The single most pressing thing to address today is ensuring active engagement and support within the community.\n\nAction: Initiate a \"Tech Support Circle\" where members can share resources, tips, and advice on navigating daily challenges in Finland."
   }
 }
