@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T12:13:28.643Z",
+  "timestamp": "2026-05-31T12:14:00.589Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 17437,
@@ -56,7 +56,7 @@
   "messagesSampled": 23,
   "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T12:13:46.141Z",
-    "briefing": "- Emerging themes/pain points: \n  - Job search and interviews remain top concerns (4 mentions).\n  - Visa-related discussions continue (1 mention).\n  - AI is gaining interest among members.\n\n- Most pressing thing to address today:\n  - Address job search support, as it’s a recurring issue.\n\n- Concrete action:\n  - Organize a Q&A session with HR professionals focusing on job interviews and resume tips."
+    "generatedAt": "2026-05-31T12:14:07.682Z",
+    "briefing": "- Emerging themes/pain points: \n  - Job search concerns (4 mentions)\n  - Visa-related queries (1 mention)\n  - AI discussions (1 mention)\n\n- Most pressing thing to address today:\n  Visa-related queries\n\n- Concrete action:\n  Create a dedicated thread for visa information and updates."
   }
 }
