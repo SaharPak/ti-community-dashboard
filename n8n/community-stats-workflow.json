@@ -1,5 +1,5 @@
 {
-  "name": "Tech Immigrants — Community Stats Collector",
+  "name": "Tech Immigrants — Daily Community Stats to GitHub (Telegram · Ollama)",
   "nodes": [
     {
       "parameters": {
@@ -7,14 +7,13 @@
           "interval": [
             {
               "field": "hours",
-              "hoursInterval": 24,
-              "triggerAtHour": 3
+              "hoursInterval": 24
             }
           ]
         }
       },
       "id": "trigger-daily",
-      "name": "Daily 6AM EEST",
+      "name": "Daily 6 AM (Europe/Helsinki)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
@@ -24,13 +23,13 @@
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatMemberCount",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getChatMemberCount",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
             {
               "name": "chat_id",
-              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+              "value": "={{ $('Config').first().json.groupChatId }}"
             }
           ]
         },
@@ -41,19 +40,20 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        -200
-      ]
+        528,
+        -512
+      ],
+      "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChat",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getChat",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
             {
               "name": "chat_id",
-              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+              "value": "={{ $('Config').first().json.groupChatId }}"
             }
           ]
         },
@@ -64,13 +64,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        0
-      ]
+        528,
+        -336
+      ],
+      "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getForumTopicIconStickers",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getForumTopicIconStickers",
         "options": {}
       },
       "id": "get-forum-stickers",
@@ -78,20 +79,20 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        200
+        528,
+        -176
       ],
       "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatMemberCount",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getChatMemberCount",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
             {
               "name": "chat_id",
-              "value": "={{ $vars.TI_CHANNEL_CHAT_ID }}"
+              "value": "={{ $('Config').first().json.channelChatId }}"
             }
           ]
         },
@@ -102,13 +103,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        400
-      ]
+        528,
+        0
+      ],
+      "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getUpdates",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getUpdates",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
@@ -129,20 +131,20 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        600
+        528,
+        176
       ],
       "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.telegram.org/bot{{ $vars.TI_BOT_TOKEN }}/getChatAdministrators",
+        "url": "=https://api.telegram.org/bot{{ $('Config').first().json.botToken }}/getChatAdministrators",
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
             {
               "name": "chat_id",
-              "value": "={{ $vars.TI_GROUP_CHAT_ID }}"
+              "value": "={{ $('Config').first().json.groupChatId }}"
             }
           ]
         },
@@ -153,13 +155,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        800
-      ]
+        528,
+        352
+      ],
+      "continueOnFail": true
     },
     {
       "parameters": {
-        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/snapshot-latest.json",
+        "url": "=https://api.github.com/repos/{{ $('Config').first().json.githubRepo }}/contents/data/snapshot-latest.json",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {}
@@ -169,20 +172,19 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        240,
-        1000
+        528,
+        512
       ],
       "continueOnFail": true,
       "credentials": {
         "httpHeaderAuth": {
-          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "id": "CONFIGURE_ME",
           "name": "GitHub PAT"
         }
       }
     },
     {
       "parameters": {
-        "mode": "runOnceForAllItems",
         "jsCode": "const memberCount = $('Get Member Count').first().json;\nconst chatInfo = $('Get Chat Info').first().json;\nconst channelCount = $('Get Channel Subscribers').first().json;\nconst recentMessages = $('Get Recent Messages').first().json;\nconst adminsData = $('Get Admins').first().json;\nconst snapshotShaResponse = $('Get Snapshot SHA').first().json;\n\nconst groupMembers = memberCount?.result || 0;\nconst channelSubscribers = channelCount?.result || 0;\n\nconst admins = (adminsData?.result || []).map(a => ({\n  name: [a.user.first_name, a.user.last_name].filter(Boolean).join(' '),\n  username: a.user.username || null,\n  status: a.status,\n  isBot: a.user.is_bot\n}));\n\nconst messages = (recentMessages?.result || []).map(u => u.message).filter(Boolean);\n\nconst keywords = {\n  vpn: 0, resume: 0, ai: 0, reject: 0,\n  visa: 0, interview: 0, salary: 0, job: 0\n};\n\nconst keywordPatterns = {\n  vpn: /vpn|فیلتر|شکن|proxy|تحریم/gi,\n  resume: /resume|رزومه|cv|cover.?letter|کاور.?لتر/gi,\n  ai: /ai|هوش.?مصنوعی|claude|chatgpt|cursor|gemini|machine.?learning/gi,\n  reject: /reject|ریجکت|رد.?شد/gi,\n  visa: /visa|ویزا|اقامت|مهاجرت/gi,\n  interview: /interview|مصاحبه/gi,\n  salary: /salary|حقوق|درآمد/gi,\n  job: /job|استخدام|شغل|کار/gi\n};\n\nfor (const msg of messages) {\n  const text = msg.text || '';\n  for (const [key, pattern] of Object.entries(keywordPatterns)) {\n    const matches = text.match(pattern);\n    if (matches) keywords[key] += matches.length;\n  }\n}\n\nconst topicMessages = {};\nfor (const msg of messages) {\n  const threadId = msg.message_thread_id || 'general';\n  if (!topicMessages[threadId]) topicMessages[threadId] = 0;\n  topicMessages[threadId]++;\n}\n\nconst now = new Date();\nconst snapshot = {\n  timestamp: now.toISOString(),\n  date: now.toISOString().split('T')[0],\n  kpis: {\n    groupMembers,\n    channelSubscribers,\n    crossPlatformReach: groupMembers + channelSubscribers,\n    adminsCount: admins.filter(a => !a.isBot).length\n  },\n  keywords,\n  topicActivity: topicMessages,\n  admins,\n  messagesSampled: messages.length,\n  chatTitle: chatInfo?.result?.title || 'Tech Immigrants'\n};\n\nconst snapshotSha = snapshotShaResponse?.sha || null;\n\nreturn [{ json: { ...snapshot, _snapshotSha: snapshotSha } }];"
       },
       "id": "transform-data",
@@ -190,19 +192,19 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        520,
-        300
+        1072,
+        0
       ]
     },
     {
       "parameters": {
         "method": "PUT",
-        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/snapshot-latest.json",
+        "url": "=https://api.github.com/repos/{{ $('Config').first().json.githubRepo }}/contents/data/snapshot-latest.json",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ (() => { const d = Object.assign({}, $json); const sha = d._snapshotSha; delete d._snapshotSha; const body = { message: 'chore: update community stats ' + d.date, content: Buffer.from(JSON.stringify(d, null, 2)).toString('base64') }; if (sha) body.sha = sha; return JSON.stringify(body); })() }}",
+        "jsonBody": "={{ $json._commitLatestBody }}",
         "options": {}
       },
       "id": "commit-latest",
@@ -210,12 +212,12 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1240,
-        200
+        2112,
+        -128
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "id": "CONFIGURE_ME",
           "name": "GitHub PAT"
         }
       }
@@ -223,12 +225,12 @@
     {
       "parameters": {
         "method": "PUT",
-        "url": "=https://api.github.com/repos/{{ $vars.GITHUB_REPO }}/contents/data/history/{{ $json.date }}.json",
+        "url": "=https://api.github.com/repos/{{ $('Config').first().json.githubRepo }}/contents/data/history/{{ $json.date }}.json",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ (() => { const d = Object.assign({}, $json); delete d._snapshotSha; return JSON.stringify({ message: 'chore: archive stats ' + d.date, content: Buffer.from(JSON.stringify(d, null, 2)).toString('base64') }); })() }}",
+        "jsonBody": "={{ $json._commitHistoryBody }}",
         "options": {}
       },
       "id": "commit-history",
@@ -236,33 +238,33 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1240,
-        400
+        2112,
+        64
       ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "GITHUB_TOKEN_CREDENTIAL_ID",
+          "id": "CONFIGURE_ME",
           "name": "GitHub PAT"
         }
       }
     },
     {
       "parameters": {
-        "chatId": "={{ $vars.SAHAR_TELEGRAM_CHAT_ID }}",
+        "chatId": "={{ $('Config').first().json.saharChatId }}",
         "text": "={{ '🤖 Daily community briefing\\n\\n' + $json.aiInsights.briefing + '\\n\\n📊 ' + $json.kpis.groupMembers.toLocaleString() + ' members · ' + $json.kpis.channelSubscribers.toLocaleString() + ' subs · ' + $json.messagesSampled + ' msgs sampled' }}",
         "additionalFields": {}
       },
       "id": "notify-sahar",
-      "name": "Notify Sahar (Optional)",
+      "name": "Notify Admin",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1480,
-        300
+        2112,
+        240
       ],
       "credentials": {
         "telegramApi": {
-          "id": "TELEGRAM_CREDENTIAL_ID",
+          "id": "CONFIGURE_ME",
           "name": "TechImmigrants Bot"
         }
       }
@@ -280,45 +282,394 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.7,
       "position": [
-        780,
-        300
+        1328,
+        0
       ]
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4o-mini",
-          "cachedResultName": "gpt-4o-mini"
-        },
-        "options": {}
-      },
-      "id": "openai-chat-model",
-      "name": "OpenAI Chat Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        740,
-        520
-      ]
-    },
-    {
-      "parameters": {
-        "jsCode": "// Re-attach the full snapshot (from Transform) and add the AI briefing\nconst snapshot = $('Transform & Aggregate').item.json;\nconst briefing = $json.output || '';\nreturn [{ json: { ...snapshot, aiInsights: { generatedAt: new Date().toISOString(), briefing } } }];"
+        "jsCode": "const snapshot = $('Transform & Aggregate').first().json;\nconst briefing = ($('AI Community Insights').first().json.output) || '';\nconst full = { ...snapshot, aiInsights: { generatedAt: new Date().toISOString(), briefing } };\n\n// SHAs: snapshot-latest from 'Get Snapshot SHA', history file from 'Get History SHA' (both may 404).\nconst sha = full._snapshotSha || null;\nlet histSha = null;\ntry { const h = $('Get History SHA').first().json; if (h && h.sha) histSha = h.sha; } catch (e) {}\n\nconst clean = { ...full };\ndelete clean._snapshotSha;\nconst contentB64 = Buffer.from(JSON.stringify(clean, null, 2), 'utf8').toString('base64');\n\nconst latestBody = { message: 'chore: update community stats ' + clean.date, content: contentB64 };\nif (sha) latestBody.sha = sha;\nconst historyBody = { message: 'chore: archive stats ' + clean.date, content: contentB64 };\nif (histSha) historyBody.sha = histSha;\n\nreturn [{ json: { ...full, _commitLatestBody: JSON.stringify(latestBody), _commitHistoryBody: JSON.stringify(historyBody) } }];"
       },
       "id": "attach-ai-insights",
       "name": "Attach AI to Snapshot",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1000,
-        300
+        1840,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c1",
+              "name": "botToken",
+              "type": "string",
+              "value": "8534798584:AAFJiqoddIv1aG82tv9sdFdcSpP-A1WL2ic"
+            },
+            {
+              "id": "c2",
+              "name": "groupChatId",
+              "type": "string",
+              "value": "-1001264215335"
+            },
+            {
+              "id": "c3",
+              "name": "channelChatId",
+              "type": "string",
+              "value": "@Tech_Immigrants"
+            },
+            {
+              "id": "c4",
+              "name": "saharChatId",
+              "type": "string",
+              "value": "99875009"
+            },
+            {
+              "id": "c5",
+              "name": "githubRepo",
+              "type": "string",
+              "value": "SaharPak/ti-community-dashboard"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "config-node",
+      "name": "Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        192,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:7b",
+        "options": {
+          "temperature": 0.4
+        }
+      },
+      "id": "ollama-chat-model",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        240
+      ],
+      "credentials": {
+        "ollamaApi": {
+          "id": "CONFIGURE_ME",
+          "name": "Ollama (docker network)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/{{ $('Config').first().json.githubRepo }}/contents/data/history/{{ $('Transform & Aggregate').first().json.date }}.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "get-history-sha",
+      "name": "Get History SHA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1584,
+        0
+      ],
+      "continueOnFail": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CONFIGURE_ME",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Tech Immigrants — Daily Community Stats → GitHub\n**Telegram · self-hosted Ollama LLM · GitHub · runs daily at 06:00 (Europe/Helsinki)**\n\nEvery morning this workflow pulls live Telegram group & channel stats and recent messages, scores bilingual (English + Persian) keyword trends, writes a short AI briefing with a self-hosted LLM, and commits the data to GitHub — which auto-redeploys the public community dashboard. Configure once; runs hands-free.\n\n⭐ **What makes it production-grade:** SHA-aware *idempotent* commits mean same-day re-runs are safe and version-controlled — not fire-and-forget.",
+        "height": 260,
+        "width": 2100,
+        "color": 7
+      },
+      "id": "s-banner",
+      "name": "Banner",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -800
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ⚙️ Config\nCentral, reusable settings: bot token, group/channel IDs, recipient chat ID, GitHub repo.\n\n_On n8n Cloud / licensed instances these live in **Variables**; this self-hosted demo centralizes them here. The GitHub token is stored as a **credential**, not in plaintext._",
+        "height": 150,
+        "width": 290,
+        "color": 3
+      },
+      "id": "s-config",
+      "name": "Note Config",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        192
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 📥 Collect (parallel)\nSeven Telegram + GitHub calls: member count, chat info, forum stickers, channel subscribers, recent messages, admins, and the current snapshot SHA.\n\nThey run **in parallel** from Config, then a **Merge** node waits for every branch before aggregation — fast and deterministic.",
+        "height": 1270,
+        "width": 330
+      },
+      "id": "s-collect",
+      "name": "Note Collect",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -656
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 🧮 Transform & Aggregate\nCode node that combines all responses into the daily snapshot: KPIs, bilingual keyword counts, topic activity, and the admin roster.",
+        "height": 150,
+        "width": 290,
+        "color": 6
+      },
+      "id": "s-transform",
+      "name": "Note Transform",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        368
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 🤖 AI Briefing\nAn agent turns the raw stats into a warm, <120-word briefing for the admin.\n\nPowered by a self-hosted **Ollama** model (`qwen2.5:7b`) over the internal Docker network — no external API cost, data stays private.",
+        "height": 190,
+        "width": 300,
+        "color": 5
+      },
+      "id": "s-ai",
+      "name": "Note AI",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 💾 Commit to GitHub\n- **Get History SHA** — fetches today's history-file SHA (new day = creates it).\n- **Attach AI to Snapshot** — merges the briefing and base64-encodes the JSON in a Code node for safe UTF-8 / Persian handling.\n- **Commits** snapshot-latest.json + history/{date}.json using the current SHA, so re-runs are idempotent. Each push auto-redeploys the dashboard.",
+        "height": 240,
+        "width": 580,
+        "color": 2
+      },
+      "id": "s-commit",
+      "name": "Note Commit",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        -320
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 📨 Notify (optional)\nSends a Telegram DM to the admin with the briefing and headline stats.",
+        "height": 150,
+        "width": 300,
+        "color": 4
+      },
+      "id": "s-notify",
+      "name": "Note Notify",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2064,
+        432
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### ✨ Engineering highlights\n- **Config-driven** — no secrets hardcoded in nodes; easy to fork.\n- **Deterministic pipeline** — ordered API calls feed a single aggregation step.\n- **UTF-8-safe commits** — base64 encoding in code handles bilingual content.\n- **Idempotent writes** — SHA-aware commits make re-runs safe.\n- **Self-hosted AI** — local Ollama model, zero API cost, data stays private.\n- **Fully automated** — daily schedule → GitHub → live dashboard, no manual steps.",
+        "height": 300,
+        "width": 900,
+        "color": 7
+      },
+      "id": "s-notes",
+      "name": "Build Notes",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        768
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 🚀 How to use\n1. Fill the **Config** node: bot token, group/channel IDs, recipient chat ID, repo.\n2. Set credentials: GitHub PAT (Header Auth) on the GitHub nodes · Telegram Bot on Notify · Ollama on the chat model.\n3. **Test workflow** once and check the repo for new commits.\n4. Toggle **Active** — runs daily at 06:00 (Europe/Helsinki).\n\n### ✅ Requirements\n- n8n self-hosted (Community edition is fine).\n- Telegram bot that is an **admin** in the group — token from @BotFather.\n- GitHub **fine-grained PAT**, Contents: read & write on the dashboard repo.\n- **Ollama** server with a model pulled (`qwen2.5:7b`), reachable from n8n.\n\n### 🔧 Customizing\n- Swap **Ollama** for OpenAI / Claude / any chat-model node.\n- Add sources — duplicate a collector and point it at another API.\n- Change cadence — edit the schedule for weekly or hourly runs.\n\n### 👤 About\nBuilt by **Sahar Pakseresht** for the Tech Immigrants community platform (17K+ members).\n\n_Group chat IDs use the `-100…` supergroup format._",
+        "height": 1080,
+        "width": 380,
+        "color": 4
+      },
+      "id": "s-setup",
+      "name": "Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        -800
+      ]
+    },
+    {
+      "parameters": {
+        "numberInputs": 7
+      },
+      "id": "merge-collectors",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        832,
+        -80
       ]
     }
   ],
   "connections": {
-    "Daily 6AM EEST": {
+    "Get Member Count": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Chat Info": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Get Forum Stickers": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Get Channel Subscribers": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Get Recent Messages": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Get Admins": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Get Snapshot SHA": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 6
+          }
+        ]
+      ]
+    },
+    "Transform & Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Community Insights",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Community Insights": {
+      "main": [
+        [
+          {
+            "node": "Get History SHA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach AI to Snapshot": {
+      "main": [
+        [
+          {
+            "node": "Commit: snapshot-latest.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Commit: history/{date}.json",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notify Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Config": {
       "main": [
         [
           {
@@ -359,95 +710,18 @@
         ]
       ]
     },
-    "Get Member Count": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Chat Info": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Forum Stickers": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Channel Subscribers": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Recent Messages": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Admins": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get Snapshot SHA": {
-      "main": [
-        [
-          {
-            "node": "Transform & Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Transform & Aggregate": {
-      "main": [
+    "Ollama Chat Model": {
+      "ai_languageModel": [
         [
           {
             "node": "AI Community Insights",
-            "type": "main",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "AI Community Insights": {
+    "Get History SHA": {
       "main": [
         [
           {
@@ -458,33 +732,23 @@
         ]
       ]
     },
-    "Attach AI to Snapshot": {
+    "Daily 6 AM (Europe/Helsinki)": {
       "main": [
         [
           {
-            "node": "Commit: snapshot-latest.json",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Commit: history/{date}.json",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Notify Sahar (Optional)",
+            "node": "Config",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
+    "Merge": {
+      "main": [
         [
           {
-            "node": "AI Community Insights",
-            "type": "ai_languageModel",
+            "node": "Transform & Aggregate",
+            "type": "main",
             "index": 0
           }
         ]
@@ -494,13 +758,9 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
   "tags": [
     {
-      "name": "Tech Immigrants",
-      "createdAt": "2026-05-17T09:00:00.000Z",
-      "updatedAt": "2026-05-17T09:00:00.000Z"
+      "name": "Tech Immigrants"
     }
-  ],
-  "pinData": {}
+  ]
 }
