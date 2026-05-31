@@ -94,10 +94,10 @@ export const actionItems = {
 
 export const admins = [
   { name: "Sahar", role: "Founder / Content Lead", suggestion: "Delegate moderation, focus on strategy & content" },
-  { name: "Hessam Joon", role: "Technical Moderator", suggestion: "Lead VPN/Technical topic curation" },
-  { name: "Ramin", role: "General Moderator", suggestion: "Active daily — spam cleanup, welcomes" },
-  { name: "Reza Maghoul", role: "Moderator", suggestion: "Assign: Job Openings topic ownership" },
-  { name: "M!n0o", role: "Moderator", suggestion: "Assign: Resume topic moderation" },
-  { name: "Boby Cloud", role: "Moderator", suggestion: "Assign: Language topic moderation" },
-  { name: "Group Booster", role: "Bot", suggestion: "Silent mode 10PM-7:30AM + auto-moderation" },
+  { name: "Moderator A", role: "Technical Moderator", suggestion: "Lead VPN/Technical topic curation" },
+  { name: "Moderator B", role: "General Moderator", suggestion: "Active daily — spam cleanup, welcomes" },
+  { name: "Moderator C", role: "Moderator", suggestion: "Assign: Job Openings topic ownership" },
+  { name: "Moderator D", role: "Moderator", suggestion: "Assign: Resume topic moderation" },
+  { name: "Moderator E", role: "Moderator", suggestion: "Assign: Language topic moderation" },
+  { name: "Community Bot", role: "Bot", suggestion: "Silent mode 10PM-7:30AM + auto-moderation" },
 ];
