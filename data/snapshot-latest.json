@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T11:47:09.153Z",
+  "timestamp": "2026-05-31T11:48:18.922Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 17437,
@@ -55,7 +55,7 @@
   "messagesSampled": 11,
   "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T11:47:17.852Z",
-    "briefing": "- Emerging themes/pain points: \n  - Visa concerns (1 mention)\n  - Job search and interviews (1 mention)\n  - Resume updates (1 mention)\n\n- Most pressing thing to address today:\n  Visa-related discussions\n\n- Concrete action:\n  Suggest setting up a dedicated thread for visa information and support, to help members navigate their current challenges."
+    "generatedAt": "2026-05-31T11:48:26.732Z",
+    "briefing": "- Emerging themes/pain points: \n  - Visa-related discussions (mentioned once)\n  - Job search and interviews (mentioned once)\n  - Interest in AI (mentioned once)\n\n- Most pressing thing to address today:\n  Visa-related concerns\n\n- Concrete action:\n  Suggest setting up a dedicated thread for visa updates and advice."
   }
 }
