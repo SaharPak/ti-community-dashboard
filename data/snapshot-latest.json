@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T11:48:18.922Z",
+  "timestamp": "2026-05-31T12:01:47.129Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 17437,
@@ -15,10 +15,11 @@
     "visa": 1,
     "interview": 0,
     "salary": 0,
-    "job": 1
+    "job": 4
   },
   "topicActivity": {
-    "general": 11
+    "183897": 1,
+    "general": 14
   },
   "admins": [
     {
@@ -52,10 +53,10 @@
       "isBot": false
     }
   ],
-  "messagesSampled": 11,
+  "messagesSampled": 15,
   "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T11:48:26.732Z",
-    "briefing": "- Emerging themes/pain points: \n  - Visa-related discussions (mentioned once)\n  - Job search and interviews (mentioned once)\n  - Interest in AI (mentioned once)\n\n- Most pressing thing to address today:\n  Visa-related concerns\n\n- Concrete action:\n  Suggest setting up a dedicated thread for visa updates and advice."
+    "generatedAt": "2026-05-31T12:02:01.107Z",
+    "briefing": "- Emerging themes: Job discussions, AI-related queries, visa concerns.\n- Most pressing issue: Job discussions.\n- Action: Create a dedicated job board thread where members can post and respond to job inquiries, easing the search process for tech immigrants in Finland."
   }
 }
