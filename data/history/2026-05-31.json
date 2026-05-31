@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-05-31T10:58:02.467Z",
+  "timestamp": "2026-05-31T11:03:40.467Z",
   "date": "2026-05-31",
   "kpis": {
-    "groupMembers": 0,
+    "groupMembers": 17437,
     "channelSubscribers": 7381,
-    "crossPlatformReach": 7381,
-    "adminsCount": 0
+    "crossPlatformReach": 24818,
+    "adminsCount": 4
   },
   "keywords": {
     "vpn": 0,
@@ -20,11 +20,42 @@
   "topicActivity": {
     "general": 9
   },
-  "admins": [],
+  "admins": [
+    {
+      "name": "TI_bot",
+      "username": "techimigrants_bot",
+      "status": "administrator",
+      "isBot": true
+    },
+    {
+      "name": "Ramin",
+      "username": "RaminR77",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Boby Cloud",
+      "username": "BobyCloud",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Hessam",
+      "username": "Hessams",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Sahar",
+      "username": "Saharlead",
+      "status": "creator",
+      "isBot": false
+    }
+  ],
   "messagesSampled": 9,
-  "chatTitle": "Sahar & Hessam Joon ❤️",
+  "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T10:58:15.983Z",
-    "briefing": "- No specific themes emerged from keyword analysis today.\n- The single most pressing thing to address is the lack of engagement or discussion topics beyond general chats.\n- Suggest creating a dedicated thread for tech-related discussions or job opportunities to boost interaction and support among members."
+    "generatedAt": "2026-05-31T11:03:57.533Z",
+    "briefing": "- No clear emerging themes or pain points were identified based on keyword analysis this week.\n- The single most pressing thing is likely the lack of specific discussion topics, as all sampled threads were general in nature.\n- Suggest creating a dedicated channel for job-related discussions to help members connect and share opportunities."
   }
 }
