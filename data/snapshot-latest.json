@@ -1,64 +1,49 @@
 {
-  "timestamp": "2026-05-19T05:49:00.000Z",
-  "date": "2026-05-19",
+  "timestamp": "2026-05-31T08:46:40.388Z",
+  "date": "2026-05-31",
   "kpis": {
-    "groupMembers": 17421,
-    "channelSubscribers": 7270,
-    "crossPlatformReach": 53000,
-    "adminsCount": 6
+    "groupMembers": 3,
+    "channelSubscribers": 7381,
+    "crossPlatformReach": 7384,
+    "adminsCount": 2
   },
-  "telegramStats": {
-    "members": 17400,
-    "membersChange": 53,
-    "membersPercent": "0.31%",
-    "messages": 184000,
-    "messagesChange": 615,
-    "messagesPercent": "0.34%",
-    "viewingMembers": 2800,
-    "viewingMembersChange": 263,
-    "viewingMembersPercent": "10.09%",
-    "postingMembers": 163,
-    "postingMembersChange": -8,
-    "postingMembersPercent": "4.68%",
-    "periodStart": "12.05.2026",
-    "periodEnd": "19.05.2026"
-  },
-  "topics": [
-    { "id": 76064, "name": "رزومه", "nameEn": "Resume", "lastActive": "2026-05-19T04:00:35Z", "status": "active" },
-    { "id": 1, "name": "General", "nameEn": "General", "lastActive": "2026-05-19T04:00:04Z", "status": "active" },
-    { "id": 183897, "name": "VPN", "nameEn": "VPN / AI Access", "lastActive": "2026-05-18T21:03:56Z", "status": "hot" },
-    { "id": 76091, "name": "فنی", "nameEn": "Technical", "lastActive": "2026-05-18T15:52:04Z", "status": "active" },
-    { "id": 76194, "name": "پیشنهاد برای ادمین های گروه", "nameEn": "Suggestions", "lastActive": "2026-05-18T09:01:30Z", "status": "moderate" },
-    { "id": 76086, "name": "زبان", "nameEn": "Language", "lastActive": "2026-05-17T19:13:58Z", "status": "moderate" },
-    { "id": 163658, "name": "موقعیت های شغلی", "nameEn": "Job Openings", "lastActive": "2026-05-17T18:07:49Z", "status": "active" },
-    { "id": 84803, "name": "اطلاع رسانی", "nameEn": "Announcements", "lastActive": "2026-05-15T06:40:24Z", "status": "low" },
-    { "id": 76092, "name": "مصاحبه", "nameEn": "Interview", "lastActive": "2026-05-08T10:49:33Z", "status": "dormant" }
-  ],
   "keywords": {
-    "vpn": 48,
-    "resume": 32,
-    "ai": 40,
-    "reject": 16,
-    "visa": 20,
-    "interview": 8,
-    "salary": 6,
-    "job": 24,
-    "cursor": 12,
-    "shekan": 15
+    "vpn": 0,
+    "resume": 0,
+    "ai": 0,
+    "reject": 0,
+    "visa": 0,
+    "interview": 0,
+    "salary": 0,
+    "job": 0
+  },
+  "topicActivity": {
+    "general": 6
   },
   "admins": [
-    { "name": "Sahar", "username": null, "status": "creator", "isBot": false },
-    { "name": "Moderator B", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Moderator D", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Moderator C", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Moderator E", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Moderator A", "username": null, "status": "administrator", "isBot": false },
-    { "name": "Community Bot", "username": null, "status": "administrator", "isBot": true }
+    {
+      "name": "TI_bot",
+      "username": "techimigrants_bot",
+      "status": "administrator",
+      "isBot": true
+    },
+    {
+      "name": "Sam",
+      "username": "Issumaa",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Sahar",
+      "username": "Saharlead",
+      "status": "creator",
+      "isBot": false
+    }
   ],
-  "unansweredQuestions": [],
-  "messagesSampled": 100,
+  "messagesSampled": 6,
+  "chatTitle": "Sahar & Hessam Joon ❤️",
   "aiInsights": {
-    "generatedAt": "2026-05-19T05:49:30.000Z",
-    "briefing": "- VPN / AI access is the dominant theme this week (48 mentions, spiking with \"shekan\" at 15). Members are struggling to reach AI tools behind filtering.\n- Resume and job-seeking remain high (resume 32, job 24, ai 40): the community is in active job-hunt mode.\n- Most pressing today: the VPN topic is \"hot\" and AI access is blocking people from the tools they need to upskill.\n- Action: pin a short, vetted guide on reliable AI access + a resume-review thread to channel the two biggest needs into one place."
+    "generatedAt": "2026-05-31T08:47:48.230Z",
+    "briefing": "- No specific themes emerged from keyword analysis; all sampled messages were general in nature.\n- The single most pressing thing to address today is the lack of engagement or discussion threads. Members are not actively sharing their experiences or concerns.\n- Create a new thread focusing on \"Navigating Tech Challenges in Finland\" to encourage more interaction and support among members."
   }
 }
