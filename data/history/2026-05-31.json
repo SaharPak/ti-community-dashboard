@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-31T10:42:09.243Z",
+  "timestamp": "2026-05-31T10:58:02.467Z",
   "date": "2026-05-31",
   "kpis": {
     "groupMembers": 0,
@@ -18,13 +18,13 @@
     "job": 0
   },
   "topicActivity": {
-    "general": 7
+    "general": 9
   },
   "admins": [],
-  "messagesSampled": 7,
+  "messagesSampled": 9,
   "chatTitle": "Sahar & Hessam Joon ❤️",
   "aiInsights": {
-    "generatedAt": "2026-05-31T10:42:15.970Z",
-    "briefing": "- No specific themes emerged this week based on keyword counts.\n- The general thread activity suggests ongoing discussions but no clear pain points.\n- Addressing the lack of structured support: Create a \"Job Search & Networking\" forum to help members find opportunities and connect.\n\nLet's get proactive!"
+    "generatedAt": "2026-05-31T10:58:15.983Z",
+    "briefing": "- No specific themes emerged from keyword analysis today.\n- The single most pressing thing to address is the lack of engagement or discussion topics beyond general chats.\n- Suggest creating a dedicated thread for tech-related discussions or job opportunities to boost interaction and support among members."
   }
 }
