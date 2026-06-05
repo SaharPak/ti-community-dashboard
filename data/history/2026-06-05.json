@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-06-05T05:47:32.805Z",
+  "date": "2026-06-05",
+  "kpis": {
+    "groupMembers": 17447,
+    "channelSubscribers": 7383,
+    "crossPlatformReach": 24830,
+    "adminsCount": 4
+  },
+  "keywords": {
+    "vpn": 0,
+    "resume": 0,
+    "ai": 0,
+    "reject": 0,
+    "visa": 0,
+    "interview": 1,
+    "salary": 0,
+    "job": 9
+  },
+  "topicActivity": {
+    "76064": 1,
+    "76092": 1,
+    "84803": 3,
+    "163658": 6,
+    "general": 4
+  },
+  "admins": [
+    {
+      "name": "TI_bot",
+      "username": "techimigrants_bot",
+      "status": "administrator",
+      "isBot": true
+    },
+    {
+      "name": "Ramin",
+      "username": "RaminR77",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Boby Cloud",
+      "username": "BobyCloud",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Hessam",
+      "username": "Hessams",
+      "status": "administrator",
+      "isBot": false
+    },
+    {
+      "name": "Sahar",
+      "username": "Saharlead",
+      "status": "creator",
+      "isBot": false
+    }
+  ],
+  "messagesSampled": 15,
+  "chatTitle": "Tech Immigrants",
+  "aiInsights": {
+    "generatedAt": "2026-06-05T05:48:06.155Z",
+    "briefing": "- Emerging themes: Job discussions dominate, with 9 mentions of \"job\" and one about an interview.\n- Most pressing issue: Address job-related concerns promptly; many members are seeking advice or support.\n- Action: Create a dedicated thread for job inquiries and offer to connect members with local resources."
+  }
+}
