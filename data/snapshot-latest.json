@@ -1,25 +1,28 @@
 {
-  "timestamp": "2026-05-31T12:14:00.589Z",
-  "date": "2026-05-31",
+  "timestamp": "2026-06-05T05:47:32.805Z",
+  "date": "2026-06-05",
   "kpis": {
-    "groupMembers": 17437,
-    "channelSubscribers": 7381,
-    "crossPlatformReach": 24818,
+    "groupMembers": 17447,
+    "channelSubscribers": 7383,
+    "crossPlatformReach": 24830,
     "adminsCount": 4
   },
   "keywords": {
     "vpn": 0,
-    "resume": 1,
-    "ai": 1,
+    "resume": 0,
+    "ai": 0,
     "reject": 0,
-    "visa": 1,
-    "interview": 0,
+    "visa": 0,
+    "interview": 1,
     "salary": 0,
-    "job": 4
+    "job": 9
   },
   "topicActivity": {
-    "183897": 1,
-    "general": 22
+    "76064": 1,
+    "76092": 1,
+    "84803": 3,
+    "163658": 6,
+    "general": 4
   },
   "admins": [
     {
@@ -53,10 +56,10 @@
       "isBot": false
     }
   ],
-  "messagesSampled": 23,
+  "messagesSampled": 15,
   "chatTitle": "Tech Immigrants",
   "aiInsights": {
-    "generatedAt": "2026-05-31T12:14:07.682Z",
-    "briefing": "- Emerging themes/pain points: \n  - Job search concerns (4 mentions)\n  - Visa-related queries (1 mention)\n  - AI discussions (1 mention)\n\n- Most pressing thing to address today:\n  Visa-related queries\n\n- Concrete action:\n  Create a dedicated thread for visa information and updates."
+    "generatedAt": "2026-06-05T05:48:06.155Z",
+    "briefing": "- Emerging themes: Job discussions dominate, with 9 mentions of \"job\" and one about an interview.\n- Most pressing issue: Address job-related concerns promptly; many members are seeking advice or support.\n- Action: Create a dedicated thread for job inquiries and offer to connect members with local resources."
   }
 }
